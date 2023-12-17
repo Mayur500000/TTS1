@@ -2,8 +2,8 @@
 import tkinter as tk
 import os
 import pyttsx3
+from subprocess import run
 from guiTTStest1Logic import PDFConverterLogic
-from audio_player_gui import MP3PlayerGUI
 
 class PDFToAudioConverterGUI:
     def __init__(self, master, pdf_paths, mp3_paths):
@@ -34,8 +34,8 @@ class PDFToAudioConverterGUI:
         self.speak(instructions)
 
         # Show additional message for Ctrl+A
-        audio_instructions = "Press Ctrl+A to listen to the selected audio."
-        self.speak(audio_instructions)
+        #audio_instructions = "Press Ctrl+A to listen to the selected audio."
+       #self.speak(audio_instructions)
 
         self.show_pdf_selection()
 
@@ -64,17 +64,12 @@ class PDFToAudioConverterGUI:
         engine.runAndWait()
 
     def switch_to_audio_player(self, event=None):
-    # Open the audio player as a child window
-       audio_player_window = tk.Toplevel(self.master)
-       print("MP3 Paths:", self.mp3_paths)  # Debugging line
-       audio_player_app = MP3PlayerGUI(audio_player_window, self.mp3_paths)
-
+        # Run the audio player script in a new process
+        run(["python", "audio_player_gui.py"])
 
     def switch_to_pdf_converter(self, event=None):
-        # Close the audio player window
-        for window in self.master.winfo_children():
-            if isinstance(window, tk.Toplevel):
-                window.destroy()
+        # Run the PDF to Audiobook Converter script in a new process
+        run(["python", "guiTTStest1Gui.py"])
 
 if __name__ == "__main__":
     # Get the path to the script's directory
